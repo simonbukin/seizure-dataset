@@ -35,7 +35,7 @@ def baseline_model():
     model.add(Dropout(0.25))
     model.add(Dense(1024, activation='sigmoid'))
     model.add(Dropout(0.4))
-    model.add(Dense(2, activation='sigmoid'))
+    model.add(Dense(5, activation='sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer=Adagrad(), metrics=['accuracy'])
     return model
 
@@ -44,4 +44,6 @@ estimator = KerasClassifier(build_fn=baseline_model, epochs=50, batch_size=64, v
 kfold = KFold(n_splits=5, shuffle=True, random_state=3)
 
 results = cross_val_score(estimator, X, categorical_Y, cv=kfold)
-print('Accuracy: {} ({})'.format(results.mean() * 100)
+print('Accuracy: {}'.format(results.mean() * 100))
+
+estimator.model.save('seizure.h5')
